@@ -18,16 +18,13 @@ steps:
       ls
       pwd
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: 'cd .\parent_module\'
 
 - task: TerraformTask@5
   displayName: 'terraform init'
   inputs:
     provider: 'azurerm'
     command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/parent_module'
     backendServiceArm: 'YAML Service Connection'
     backendAzureRmStorageAccountName: 'punitstg'
     backendAzureRmContainerName: 'punitcontainer'
@@ -38,6 +35,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/parent_module'
     environmentServiceNameAzureRM: 'YAML Service Connection'
 
 - task: TerraformTask@5
@@ -45,6 +43,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'apply'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/parent_module'
     environmentServiceNameAzureRM: 'YAML Service Connection'
 
 
